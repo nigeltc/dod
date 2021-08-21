@@ -5,11 +5,20 @@ const scene = {
     create: function() {
 	this.player = this.add.bitmapText(400, 300, "arcade", "X")
 	    .setOrigin(0.5);
+	this.cursors = this.input.keyboard.createCursorKeys();
     },
     update: function() {
-	this.player.x += 10;
-	if (this.player.x > 850) {
-	    this.player.x = -50;
+	if (this.cursors.left.isDown) {
+	    this.player.x -= 10;
+	}
+	if (this.cursors.right.isDown) {
+	    this.player.x += 10;
+	}
+	if (this.cursors.up.isDown) {
+	    this.player.y -= 10;
+	}
+	if (this.cursors.down.isDown) {
+	    this.player.y += 10;
 	}
     }
 };
