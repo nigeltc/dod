@@ -5,3 +5,4 @@ This is a simple roguelike created while reading _Andre Alves Garzia's_ book on 
 ## Notes
 
 * I'm linking to the minimized CDN version of phaser to save space.
+* Chapter 3: There are some changes to the game config when moving to the full dungeon map. Also, for Firefox, at least, you need to add `type="module"` to the script tag in index.html.

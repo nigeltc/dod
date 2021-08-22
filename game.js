@@ -1,3 +1,5 @@
+import level from "./room1.js"
+
 const scene = {
     preload: function() {
 	this.load.spritesheet(
@@ -10,25 +12,13 @@ const scene = {
 	    });
     },
     create: function() {
-	let level = [
-	    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-	    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	    [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
-	    [1, 0, 0, 0, 2, 0, 0, 0, 0, 1],
-	    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	    [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
-	    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
 	const wall = 554;
-	const skeleton = 480;
 	const floor = 0;
-	level = level.map(r => r.map(t => t == 1 ? wall : t == 2 ? skeleton : floor));
+	let mappedLevel = level.map(r => r.map(t => t == 1 ? wall : floor));
 
 	const tileSize = 16;
 	const config = {
-	    data: level,
+	    data: mappedLevel,
 	    tileWidth: tileSize,
 	    tileHeight: tileSize
 	};
@@ -47,11 +37,12 @@ const scene = {
 
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 80 * 16,
+    height: 50 * 16,
     backgroundColor: "#000",
     parent: "game",
     pixelArt: true,
+    zoom: 1,
     scene: scene,
     physics: {
 	default: "arcade",
