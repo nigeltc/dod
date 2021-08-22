@@ -1,4 +1,6 @@
-import level from "./room1.js"
+import dungeon from "./dungeon.js";
+import tm from "./turnManager.js";
+import PlayerCharacter from "./player.js";
 
 const scene = {
     preload: function() {
@@ -12,26 +14,15 @@ const scene = {
 	    });
     },
     create: function() {
-	const wall = 554;
-	const floor = 0;
-	let mappedLevel = level.map(r => r.map(t => t == 1 ? wall : floor));
-
-	const tileSize = 16;
-	const config = {
-	    data: mappedLevel,
-	    tileWidth: tileSize,
-	    tileHeight: tileSize
-	};
-	const map = this.make.tilemap(config);
-	const tileset = map.addTilesetImage(
-	    "tiles",
-	    "tiles",
-	    tileSize,
-	    tileSize,
-	    0, 1);
-	const ground = map.createStaticLayer(0, tileset, 0, 0);
+	dungeon.initialize(this);
+	let player = new PlayerCharacter(15, 15);
+	tm.addEntity(player);
     },
     update: function() {
+	if (tm.over()) {
+	    tm.refresh();
+	}
+	tm.turn();
     }
 };
 

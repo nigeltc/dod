@@ -6,3 +6,4 @@ This is a simple roguelike created while reading _Andre Alves Garzia's_ book on 
 
 * I'm linking to the minimized CDN version of phaser to save space.
 * Chapter 3: There are some changes to the game config when moving to the full dungeon map. Also, for Firefox, at least, you need to add `type="module"` to the script tag in index.html.
+* Chapter 3: With the new turn manager, you need to hold the keys down for the movement to feel natural.
