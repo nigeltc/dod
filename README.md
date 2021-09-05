@@ -10,3 +10,4 @@ The pathfinding library used is [Xueqiao Xu's PathFinding.js](https://github.com
 * Chapter 3: There are some changes to the game config when moving to the full dungeon map. Also, for Firefox, at least, you need to add `type="module"` to the script tag in index.html.
 * Chapter 3: With the new turn manager, you need to hold the keys down for the movement to feel natural.
 * Chapter 4: I moved all the script tags to the end of the body just to be safe.
+* Chapter 4: On p.83, there is a tileToWorldX() call that should be tileToWorldY()
