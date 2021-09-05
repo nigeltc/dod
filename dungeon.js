@@ -1,4 +1,5 @@
 import level from "./level.js";
+import tm from "./turnManager.js";
 
 let dungeon = {
     sprites: {
@@ -26,8 +27,74 @@ let dungeon = {
 	this.map = map.createDynamicLayer(0, tileset, 0, 0);
     },
     isWalkableTile: function(x, y) {
+	// check all entities
+	let allEntities = [...tm.entities];
+	for(let e=0; e < allEntities.length; e++) {
+	    let entity = allEntities[e];
+	    if ((entity.x == x) && (entity.y == y)) {
+		return false;
+	    }
+	}
+
+	// check level
 	let tileAtDestination = this.map.getTileAt(x, y);
 	return tileAtDestination.index != this.sprites.wall;;
+    },
+    entityAtTile: function(x, y) {
+	let allEntities = [...tm.entities];
+	for(let e=0; e < allEntities.length; e++) {
+	    let entity = allEntities[e];
+	    if ((entity.x == x) && (entity.y == y)) {
+		return entity;
+	    }
+	}
+	return false;
+    },
+    distanceBetweenEntities: function(e1, e2) {
+	let grid = new PF.Grid(dungeon.level);
+	let finder = new PF.AStarFinder({allowDiagonal: true});
+	let path = finder.findPath(e1.x, e1.y, e2.x, e2.y, grid);
+	if (path.length >= 2) {
+	    return path.length;
+	} else {
+	    return false;
+	}
+    },
+    attackEntity: function(attacker, victim) {
+	attacker.moving = true;
+	attacker.tweens = attacker.tweens || 0;
+	attacker.tweens += 1;
+
+	this.scene.tweens.add({
+	    targets: attacker.sprite,
+	    onComplete: () => {
+		attacker.sprite.x = this.map.tileToWorldX(attacker.x);
+		attacker.sprite.y = this.map.tileToWorldY(attacker.y);
+		attacker.moving = false;
+		attacker.tweens -= 1;
+
+		let damage = attacker.attack();
+		victim.healthPoints -= damage;
+
+		console.log(`${attacker.name} does ${damage} to ${victim.name} who now has ${victim.healthPoints} life left`);
+
+		if (victim.healthPoints <= 0) {
+		    this.removeEntity(victim);
+		}
+	    },
+	    x: this.map.tileToWorldX(victim.x),
+	    y: this.map.tileToWorldY(victim.y),
+	    ease: "Power2",
+	    hold: 20,
+	    duration: 80,
+	    delay: attacker.tweens * 200,
+	    yoyo: true
+	});
+    },
+    removeEntity: function(entity) {
+	tm.entities.delete(entity);
+	entity.sprite.destroy();
+	entity.onDestroy();
     },
     initializeEntity: function(entity) {
 	let x = this.map.tileToWorldX(entity.x);
