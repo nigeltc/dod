@@ -13,10 +13,6 @@ export default class PlayerCharacter {
         dungeon.initializeEntity(this);
     }
 
-    refresh() {
-        this.movementPoints = 1;
-    }
-
     turn() {
 	let moved = false;
         let newX = this.x;
@@ -53,7 +49,11 @@ export default class PlayerCharacter {
         }
     }
 
+    refresh() {
+        this.movementPoints = 1;
+    }
+
     over() {
-        return this.movementPoints == 0;
+        return this.movementPoints == 0 && !this.moving;
     }
 }

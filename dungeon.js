@@ -9,10 +9,10 @@ let dungeon = {
     initialize: function (scene) {
 	this.scene = scene;
 	this.level = level;
-	let levelWithTiles = level.map(r => r.map(t => t == 1 ? this.sprites.wall : this.sprites.floor));
+	this.levelWithTiles = level.map(r => r.map(t => t == 1 ? this.sprites.wall : this.sprites.floor));
 
 	const config = {
-	    data: levelWithTiles,
+	    data: this.levelWithTiles,
 	    tileWidth: this.tileSize,
 	    tileHeight: this.tileSize
 	};
@@ -26,7 +26,8 @@ let dungeon = {
 	this.map = map.createDynamicLayer(0, tileset, 0, 0);
     },
     isWalkableTile: function(x, y) {
-	return this.level[y][x] != 1;
+	let tileAtDestination = this.map.getTileAt(x, y);
+	return tileAtDestination.index != this.sprites.wall;;
     },
     initializeEntity: function(entity) {
 	let x = this.map.tileToWorldX(entity.x);
@@ -46,7 +47,7 @@ let dungeon = {
 	    x: this.map.tileToWorldX(x),
 	    y: this.map.tileToWorldY(y),
 	    ease: "Power2",
-	    duration: 150
+	    duration: 100
 	})
     }
 };

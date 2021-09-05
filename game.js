@@ -1,6 +1,7 @@
 import dungeon from "./dungeon.js";
 import tm from "./turnManager.js";
 import PlayerCharacter from "./player.js";
+import BasicMonster from "./monster.js";
 
 const scene = {
     preload: function() {
@@ -15,8 +16,9 @@ const scene = {
     },
     create: function() {
 	dungeon.initialize(this);
-	let player = new PlayerCharacter(15, 15);
-	tm.addEntity(player);
+	dungeon.player = new PlayerCharacter(15, 15);
+	tm.addEntity(dungeon.player);
+	tm.addEntity(new BasicMonster(70, 8));
     },
     update: function() {
 	if (tm.over()) {
