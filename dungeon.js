@@ -76,7 +76,7 @@ let dungeon = {
 		let damage = attacker.attack();
 		victim.healthPoints -= damage;
 
-		console.log(`${attacker.name} does ${damage} to ${victim.name} who now has ${victim.healthPoints} life left`);
+		this.log(`${attacker.name} does ${damage} to ${victim.name} who now has ${victim.healthPoints} life left`);
 
 		if (victim.healthPoints <= 0) {
 		    this.removeEntity(victim);
@@ -116,6 +116,11 @@ let dungeon = {
 	    ease: "Power2",
 	    duration: 100
 	})
+    },
+    msgs: [],
+    log: function(text) {
+	this.msgs.unshift(text);
+	this.msgs = this.msgs.slice(0, 8);
     }
 };
 

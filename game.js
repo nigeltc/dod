@@ -1,42 +1,15 @@
-import dungeon from "./dungeon.js";
-import tm from "./turnManager.js";
-import PlayerCharacter from "./player.js";
-import BasicMonster from "./monster.js";
-
-const scene = {
-    preload: function() {
-	this.load.spritesheet(
-	    "tiles",
-	    "assets/colored.png",
-	    {
-		frameWidth: 16,
-		framHeight: 16,
-		spacing: 1
-	    });
-    },
-    create: function() {
-	dungeon.initialize(this);
-	dungeon.player = new PlayerCharacter(15, 15);
-	tm.addEntity(dungeon.player);
-	tm.addEntity(new BasicMonster(70, 8));
-    },
-    update: function() {
-	if (tm.over()) {
-	    tm.refresh();
-	}
-	tm.turn();
-    }
-};
+import ui from "./ui.js";
+import world from "./world.js";
 
 const config = {
     type: Phaser.AUTO,
     width: 80 * 16,
     height: 50 * 16,
-    backgroundColor: "#000",
+    backgroundColor: "#472D3C",
     parent: "game",
     pixelArt: true,
     zoom: 1,
-    scene: scene,
+    scene: [world, ui],
     physics: {
 	default: "arcade",
 	arcade: {

@@ -16,6 +16,57 @@ export default class PlayerCharacter {
         dungeon.initializeEntity(this);
     }
 
+    createUI(config) {
+	let scene = config.scene;
+	let x = config.x;
+	let y = config.y;
+	let accumulatedHeight = 0;
+
+	// player sprite
+	this.UIsprite = scene.add.sprite(x, y, "tiles", this.tile).setOrigin(0);
+
+	// player name
+	this.UIheader = scene.add.text(
+	    x + 20,
+	    y,
+	    this.name,
+	    {
+		font: "16px Arial",
+		color: "#CFC6B8"
+	    });
+
+	// player stats
+	this.UIstats = scene.add.text(
+	    x + 20,
+	    y + 20,
+	    `HP: ${this.healthPoints}\nMP: ${this.movementPoints}\nAP: ${this.actionPoints}`,
+	    {
+		font: "12px Arial",
+		fill: "#CFC6B8"
+	    });
+	accumulatedHeight += this.UIstats.height + this.UIsprite.height;
+
+	// inventory screen
+	let itemsPerRow = 5;
+	let rows = 2;
+	this.UIitems = [];
+	for(let row=1; row <= rows; row++) {
+	    for(let cell=1; cell <= itemsPerRow; cell++) {
+		let rx = x + (25 * cell);
+		let ry = y + 50 + (25 * row);
+		this.UIitems.push(
+		    scene.add.rectangle(rx, ry, 20, 20, 0xCFC6B8, 0.3).setOrigin(0)
+		);
+	    }
+	}
+	accumulatedHeight += 90;
+
+	// separator
+	scene.add.line(x+5, y+120, 0, 10, 175, 10, 0xCFC6B8).setOrigin(0);
+
+	return accumulatedHeight;
+    }
+
     turn() {
 	let oldX = this.x;
 	let oldY = this.y;
@@ -74,7 +125,19 @@ export default class PlayerCharacter {
     }
 
     over() {
-        return this.movementPoints == 0 && !this.moving;
+        let isOver =  this.movementPoints == 0 && !this.moving;
+
+	if (isOver && this.UIheader) {
+	    this.UIheader.setColor("#CFC6B8");
+	} else {
+	    this.UIheader.setColor("#FFFFFF");
+	}
+
+	if (this.UIstatsText) {
+	    this.UIstatsText.setText(`HP: ${this.healthPoints}\nMP: ${this.movementPoints}\nAP: ${this.actionPoints}`);
+	}
+	
+	return isOver;
     }
 
     attack() {
